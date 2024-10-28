@@ -21,3 +21,5 @@ network.train(
 
 accuracy = evaluate(network, test_data)
 print(f"Accuracy on test data: {accuracy} / {len(test_data)}")
+
+network.compile()

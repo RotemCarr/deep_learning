@@ -1,4 +1,7 @@
+import ast
+import pathlib
 import random
+import re
 import time
 from typing import List
 from utils.activations import *
@@ -99,3 +102,31 @@ class Network:
 
         self.biases = [b - (learning_rate / len(batch)) * nb
                        for b, nb in zip(self.biases, sum_nabla_b)]
+
+    def compile(self, path: str = "./trained_models"):
+        files = [f.name for f in pathlib.Path(path).iterdir() if f.is_file()]
+        file_numbers = [
+            int(m.group(1)) for file in files
+            if (m := re.match(r"network_(\d+)\.model", file))
+        ]
+
+        new_model_number = np.max(file_numbers) + 1 if file_numbers else 1
+        new_filename = pathlib.Path(f"{path}/network_{new_model_number}.model")
+        while new_filename.exists():
+            new_model_number += 1
+            new_filename = pathlib.Path(f"{path}/network_{new_model_number}.model")
+
+        with open(new_filename, "x") as f:
+            f.write(f"{[self.layer_sizes, [w.tolist() for w in self.weights], [b.tolist() for b in self.biases]]}")
+            f.close()
+
+
+def load(path: str):
+    with open(path) as f:
+        model = ast.literal_eval(f.read())
+        f.close()
+
+    network = Network(model[0])
+    network.weights = [np.array(w) for w in model[1]]
+    network.biases = [np.array(b) for b in model[2]]
+    return network
