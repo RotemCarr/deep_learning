@@ -1,7 +1,12 @@
+"""
+Utility module for preproccesing data for
+Neural Networks training.
+"""
 import numpy as np
 
 
 def preprocess_data(data):
+    """Preproccess csv data format."""
     # Shuffle the data first
     data = data.sample(frac=1).reset_index(drop=True)
 

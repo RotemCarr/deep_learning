@@ -1,8 +1,8 @@
-from network import Network
+"""Main entry point for the program."""
 import pandas as pd
+from network import Network
+from utils.data_loader import preprocess_data
 from utils.evaluator import evaluate
-from utils.data_loader import *
-
 
 mnist_train = pd.read_csv('data/mnist_train.csv')
 mnist_test = pd.read_csv('data/mnist_test.csv')
