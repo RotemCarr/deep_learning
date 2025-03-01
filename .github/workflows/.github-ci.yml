@@ -19,3 +19,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           find . -name "*.py" | xargs pylint
+      - name: Test code
+        run: |
+          pip install pytest
+          pytest ./tests --reportportal
