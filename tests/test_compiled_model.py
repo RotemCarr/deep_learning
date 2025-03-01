@@ -7,9 +7,9 @@ from network import Network, load
 from utils.data_loader import preprocess_data
 from utils.evaluator import evaluate
 
-logger=getLogger("network_compiler")
-mnist_train = pd.read_csv('./data/mnist_train.csv')
-mnist_test = pd.read_csv('./data/mnist_test.csv')
+logger = getLogger("network_compiler")
+mnist_train = pd.read_csv("./data/mnist_train.csv")
+mnist_test = pd.read_csv("./data/mnist_test.csv")
 training_data = preprocess_data(mnist_train)
 test_data = preprocess_data(mnist_test)
 
@@ -24,7 +24,9 @@ def test_network_compile():
         learning_rate=0.03,
     )
     temp_dir = tempfile.TemporaryDirectory()
-    logger.info(f"Created temporary directory for network compilation: {temp_dir.name}...")
+    logger.info(
+        f"Created temporary directory for network compilation: {temp_dir.name}..."
+    )
     logger.info(f"Compiling network to {temp_dir.name}...")
     network.compile(temp_dir.name)
     logger.info("Checking to see if the network compiled successfully...")
@@ -44,7 +46,9 @@ def test_compiled_network_load():
     precompile_accuracy = evaluate(network, test_data)
     logger.info(f"Accuracy before compilation is: {precompile_accuracy}")
     temp_dir = tempfile.TemporaryDirectory()
-    logger.info(f"Created temporary directory for network compilation: {temp_dir.name}...")
+    logger.info(
+        f"Created temporary directory for network compilation: {temp_dir.name}..."
+    )
     logger.info(f"Compiling network to {temp_dir.name}...")
     network.compile(temp_dir.name)
     logger.info(f"Loading compiled network from {temp_dir.name}...")

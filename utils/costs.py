@@ -1,4 +1,5 @@
 """Utility module for cost functions."""
+
 import numpy as np
 
 

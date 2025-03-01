@@ -2,6 +2,7 @@
 Utility module for preproccesing data for
 Neural Networks training.
 """
+
 import numpy as np
 
 

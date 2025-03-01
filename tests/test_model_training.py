@@ -1,3 +1,5 @@
+"""Test module for training evaluation."""
+
 import time
 from logging import getLogger
 import pandas as pd
@@ -7,13 +9,23 @@ from utils.evaluator import evaluate
 
 
 logger = getLogger("network_training")
-mnist_train = pd.read_csv('./data/mnist_train.csv')
-mnist_test = pd.read_csv('./data/mnist_test.csv')
+mnist_train = pd.read_csv("./data/mnist_train.csv")
+mnist_test = pd.read_csv("./data/mnist_test.csv")
 training_data = preprocess_data(mnist_train)
 test_data = preprocess_data(mnist_test)
 
 
 def test_model_training():
+    """
+    Tests model training
+
+    Actions:
+        1) Train a network
+        2) Evaluate the accuracy
+
+    Expected Result:
+        Accuracy is above 95%
+    """
     logger.info("Starting network training...")
     network = Network([784, 128, 64, 10])
     network.train(
@@ -29,6 +41,16 @@ def test_model_training():
 
 
 def test_training_time():
+    """
+    Tests training time
+
+    Actions:
+        1) Train a network
+        2) Evaluate the time passed
+
+    Expected Result:
+        Less than 60 seconds passed
+    """
     logger.info("Starting network training...")
     start_time = time.time()
     network = Network([784, 128, 64, 10])

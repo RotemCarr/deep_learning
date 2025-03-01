@@ -1,4 +1,5 @@
 """Module defining the Neural Network functionallity and structure."""
+
 import ast
 import pathlib
 import random
@@ -12,7 +13,7 @@ from utils.activations import relu, sigmoid, softmax, relu_prime
 
 class Network:
     """Class defining the structure of each layer and
-     the interaction between layers in the Neural Network."""
+    the interaction between layers in the Neural Network."""
 
     def __init__(self, layer_sizes: List[int]):
         self.cost = None
@@ -21,20 +22,24 @@ class Network:
         self.biases = self._synoptic_biases()
 
     def _synoptic_weights(self):
-        return np.array([
-            np.random.randn(y, x) * np.sqrt(2 / x)
-            for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])
-        ], dtype=object)
+        return np.array(
+            [
+                np.random.randn(y, x) * np.sqrt(2 / x)
+                for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])
+            ],
+            dtype=object,
+        )
 
     def _synoptic_biases(self):
-        return np.array([np.random.randn(y, 1) for y in self.layer_sizes[1:]], dtype=object)
+        return np.array(
+            [np.random.randn(y, 1) for y in self.layer_sizes[1:]], dtype=object
+        )
 
     def feedforward(self, activations: np.ndarray):
         """Feeding the Network forward for training and using the model."""
         for index, _ in enumerate(self.layer_sizes[1:]):
             z = np.dot(self.weights[index], activations) + self.biases[index]
-            activations = relu(z) if \
-                index < len(self.layer_sizes) - 2 else sigmoid(z)
+            activations = relu(z) if index < len(self.layer_sizes) - 2 else sigmoid(z)
         return activations
 
     def train(self, training_data, epochs, batch_size, learning_rate):
@@ -51,7 +56,7 @@ class Network:
         for i in range(epochs):
             random.shuffle(training_data)
             batches = [
-                training_data[j:j + batch_size] for j in range(0, n, batch_size)
+                training_data[j : j + batch_size] for j in range(0, n, batch_size)
             ]
 
             for batch in batches:
@@ -88,7 +93,9 @@ class Network:
         for layer in range(2, len(self.layer_sizes)):
             z = zs[-layer]
             sp = relu_prime(z)  # Derivative of ReLU
-            delta = np.dot(self.weights[-layer + 1].T, delta) * sp  # Propagate delta back
+            delta = (
+                np.dot(self.weights[-layer + 1].T, delta) * sp
+            )  # Propagate delta back
             nabla_b[-layer] = delta
             nabla_w[-layer] = np.dot(delta, activations[-layer - 1].T)
 
@@ -107,17 +114,22 @@ class Network:
             sum_nabla_b = [nb + dnb for nb, dnb in zip(sum_nabla_b, nabla_b)]
 
         # Update weights and biases using average gradients
-        self.weights = [w - (learning_rate / len(batch)) * nw
-                        for w, nw in zip(self.weights, sum_nabla_w)]
+        self.weights = [
+            w - (learning_rate / len(batch)) * nw
+            for w, nw in zip(self.weights, sum_nabla_w)
+        ]
 
-        self.biases = [b - (learning_rate / len(batch)) * nb
-                       for b, nb in zip(self.biases, sum_nabla_b)]
+        self.biases = [
+            b - (learning_rate / len(batch)) * nb
+            for b, nb in zip(self.biases, sum_nabla_b)
+        ]
 
     def compile(self, path: str = "./trained_models"):
         """Compile a Neural Network to a file with the '.model' extension."""
         files = [f.name for f in pathlib.Path(path).iterdir() if f.is_file()]
         file_numbers = [
-            int(m.group(1)) for file in files
+            int(m.group(1))
+            for file in files
             if (m := re.match(r"network_(\d+)\.model", file))
         ]
 
@@ -125,13 +137,18 @@ class Network:
         new_filename = pathlib.Path(f"{path}/network_{new_model_number}.model")
         while new_filename.exists():
             new_model_number += 1
-            new_filename = pathlib.Path(
-                f"{path}/network_{new_model_number}.model")
+            new_filename = pathlib.Path(f"{path}/network_{new_model_number}.model")
 
         with open(new_filename, "x", encoding="utf-8") as f:
-            f.write(f"""{[self.layer_sizes,
-                          [w.tolist() for w in self.weights],
-                          [b.tolist() for b in self.biases]]}""")
+            f.write(
+                f"""{
+                    [
+                        self.layer_sizes,
+                        [w.tolist() for w in self.weights],
+                        [b.tolist() for b in self.biases],
+                    ]
+                }"""
+            )
             f.close()
 
 

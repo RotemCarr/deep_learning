@@ -1,4 +1,5 @@
 """Utility module for neuron activation functions."""
+
 import numpy as np
 
 
