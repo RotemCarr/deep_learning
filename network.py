@@ -61,7 +61,7 @@ class Network:
 
             for batch in batches:
                 self.update_batches(batch, learning_rate)
-                print(f"Cost: {self.cost}")
+                # print(f"Cost: {self.cost}")
 
             print(f"Epoch {i + 1} complete.")
             time.sleep(1)
