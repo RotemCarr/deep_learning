@@ -19,6 +19,12 @@ jobs:
         run: |
           pip install -r requirements.txt
           ruff check
+
+      - name: git LFS setup
+        run: |
+          git lfs install
+          git lfs pull
+
       - name: Test code
         run: |
           pip install pytest
