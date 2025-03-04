@@ -25,7 +25,10 @@ jobs:
           git lfs install
           git lfs pull
 
+      - name: Add module to PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+
       - name: Test code
         run: |
           pip install pytest
-          pytest ./tests --reportportal
+          PYTHONPATH=$(pwd) pytest ./tests --reportportal
