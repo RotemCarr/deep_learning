@@ -31,4 +31,4 @@ jobs:
       - name: Test code
         run: |
           pip install pytest
-          PYTHONPATH=$(pwd) pytest -sv --reportportal -o "rp_api_key=${{ secrets.RP_DEMO_KEY }}"
+          PYTHONPATH=$(pwd) pytest -sv --reportportal -o "rp_api_key=${{ secrets.RP_DEMO_KEY }}" --html result/report.html
